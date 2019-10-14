@@ -1,0 +1,177 @@
+homebrew
+  $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+Dev setup
+  $ mkdir -p ~/dev/notes
+
+slack
+  $ brew cask install slack
+
+chrome
+  $ brew cask install google-chrome
+
+1password
+  $ brew cask install 1password
+  1password Chrome extension: https://chrome.google.com/webstore/detail/1password-extension-deskt/aomjjhallfgjeglblehebfpbcfeobpgk?hl=en
+
+iterm2
+  $ brew cask install iterm2
+
+zsh
+  $ brew install zsh zsh-completions
+  $ sudo vim /etc/shells
+    /usr/local/bin/zsh
+  $ chsh -s `which zsh`
+
+oh-my-zsh
+  $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  $ vim ~/.zshrc
+    ZSH_THEME="pygmalion"
+    plugins=(git colorize osx aws docker golang helm kubectl tmux)
+  $ source ~/.zshrc
+
+neovim
+  $ brew install neovim
+
+tmux
+  $ brew install tmux
+
+tree
+  $ brew install tree
+
+fzf
+  $ brew install fzf
+
+ack
+  $ brew install ack
+
+httpie
+  $ brew install httpie
+
+jq
+  $ brew install jq
+
+yq
+  $ brew install yq
+
+sops
+  $ brew install sops
+
+git
+  $ brew install git
+
+git ssh
+  https://confluence.atlassian.com/bitbucket/set-up-ssh-for-git-728138079.html
+  $ ssh -V
+  $ ssh-keygen
+    default file
+    ssh-key-password
+  $ ls ~/.ssh
+  $ eval `ssh-agent`
+  $ ssh-add -K ~/.ssh/id_rsa
+  $ vim ~/.ssh/config
+    Host *
+      UseKeychain yes
+  Copy and paste into GitHub SSH Keys: srussell-mac
+  $ cd ~/dev
+  $ git clone git@github.com:AmundsenJunior/dotfiles.git
+    Unlock key, and auto-unlock when logged in
+
+docker
+  https://docs.docker.com/docker-for-mac/install/
+
+kubectl
+  $ brew install kubernetes-cli
+
+helm
+  $ brew install kubernetes-helm
+
+aws-cli
+  $ brew install awscli
+  $ aws configure
+
+sublime
+  $ brew cask install sublime-text
+  $ subl
+  Preferences > Settings > user settings, add "ignored_packages": []
+
+go
+  $ brew install go
+
+goland
+  $ brew cask install goland
+
+terraform
+  $ brew install terraform
+
+terragrunt
+  $ brew install terragrunt
+
+Spotify
+  $ brew cask install spotify
+
+Alfred
+  $ brew cask install alfred
+
+python
+  $ brew install python
+
+pgcli
+  $ brew install pgcli
+  $ pgcli (creates ~/.config/pgcli/config file)
+
+  Adding DSNs to config
+  $ vim ~/.config/pgcli/config
+    [alias_dsn]
+    prod_redshift = "host=redshiftclusterurl.us-east-1.redshift.amazonaws.com port=5439 dbname=proddb user=dbuser"
+
+nodejs
+  $ brew install node
+
+env.sh
+  #!/bin/zsh
+
+  export GOPATH="/Users/scott.russell/dev/go"
+  export PYTHONPATH="/usr/local/opt/python"
+  export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$GOPATH/bin:$PYTHONPATH/libexec/bin"
+  export EDITOR=vim
+
+  # Create a folder and move into it in one command
+  function mkcd() { mkdir -p "$@" && cd "$_"; }
+
+  alias tsw="tmux split-window"
+
+
+  $ vim ~/.zshrc
+    source ~/dev/dotfiles/env.sh
+  $ source ~/.zshrc
+
+https://towardsdatascience.com/customising-the-mac-terminal-to-increase-productivity-and-improve-the-interface-894f6d86d573
+https://sourabhbajaj.com/mac-setup/iTerm/zsh.html
+https://docs.docker.com/docker-for-mac/install/
+
+
+TODO
+
+https://matthewpalmer.net/kubernetes-app-developer/articles/how-to-run-local-kubernetes-docker-for-mac.html
+
+minikube
+  $ brew cask install minikube
+
+  https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperkit-driver
+  $ curl -LO https://storage.googleapis.com/minikube/releases/latest/docker-machine-driver-hyperkit \
+    && chmod +x docker-machine-driver-hyperkit \
+    && sudo mv docker-machine-driver-hyperkit /usr/local/bin/ \
+    && sudo chown root:wheel /usr/local/bin/docker-machine-driver-hyperkit \
+    && sudo chmod u+s /usr/local/bin/docker-machine-driver-hyperkit
+  $ minikube start --vm-driver hyperkit
+  $ minikube dashboard
+
+  Enable Heapster metrics
+    $ minikube addons enable heapster
+    $ kubectl label svc heapster kubernetes.io/minikube-addons-endpoint=heapster --namespace kube-system
+    $ minikube addons open heapster
+
+  Use Minikube VM as Docker environment
+    $ eval $(minikube docker-env)
+
