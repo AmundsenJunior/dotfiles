@@ -90,6 +90,9 @@ aws-cli
   $ brew install awscli
   $ aws configure
 
+eksctl
+  $ brew install weaveworks/tap/eksctl
+
 sublime
   $ brew cask install sublime-text
   $ subl
