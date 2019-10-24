@@ -57,6 +57,10 @@ yq
 sops
   $ brew install sops
 
+envsubst
+  $ brew install gettext
+  $ brew link --force gettext
+
 git
   $ brew install git
 
