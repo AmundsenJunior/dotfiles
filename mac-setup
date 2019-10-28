@@ -25,9 +25,24 @@ zsh
 
 oh-my-zsh
   $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  $ vim ~/.zshrc
+  $ vim +11 ~/.zshrc
     ZSH_THEME="pygmalion"
     plugins=(git colorize osx aws docker golang helm kubectl tmux)
+  $ source ~/.zshrc
+
+kubectl zsh prompt
+  $ git clone git@github.com:superbrothers/zsh-kubectl-prompt.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-kubectl-prompt
+  $ vim +61 ~/.oh-my-zsh/custom/plugins/zsh-kubectl-prompt/kubectl.zsh
+    ZSH_KUBECTL_CONTEXT="${context}"
+    eks_cluster="$(echo ${ZSH_KUBECTL_CONTEXT} | sed -n 's/arn:aws:eks:[a-z0-9\-]*:[0-9]*:cluster\/\([A-Za-z0-9\-\/]*\)/\1/p')"
+    if [[ ! -z "$eks_cluster" ]]; then
+        context="${eks_cluster}"
+    fi
+    ns="$(kubectl config view -o "jsonpath={.contexts[?(@.name==\"$context\")].context.namespace}")"
+  $ vim +75 ~/.zshrc
+    autoload -U colors; colors
+    source ~/.oh-my-zsh/custom/plugins/zsh-kubectl-prompt/kubectl.zsh
+    RPROMPT='%{$fg_bold[red]%}($ZSH_KUBECTL_PROMPT)%{$reset_color%}'
   $ source ~/.zshrc
 
 neovim
@@ -90,6 +105,13 @@ kubectl
 helm
   $ brew install kubernetes-helm
 
+minikube
+  $ brew cask install minikube
+
+  https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperkit-driver
+  $ minikube start --vm-driver hyperkit
+  $ minikube dashboard &
+
 aws-cli
   $ brew install awscli
   $ aws configure
@@ -123,6 +145,12 @@ Alfred
 python
   $ brew install python
 
+pyenv
+  $ brew install pyenv
+
+pipenv
+  $ brew install pipenv
+
 pgcli
   $ brew install pgcli
   $ pgcli (creates ~/.config/pgcli/config file)
@@ -147,6 +175,7 @@ env.sh
   function mkcd() { mkdir -p "$@" && cd "$_"; }
 
   alias tsw="tmux split-window"
+  alias mk="minikube"
 
 
   $ vim ~/.zshrc
@@ -160,20 +189,34 @@ https://docs.docker.com/docker-for-mac/install/
 
 TODO
 
-https://matthewpalmer.net/kubernetes-app-developer/articles/how-to-run-local-kubernetes-docker-for-mac.html
+
+kubernetes
+  https://matthewpalmer.net/kubernetes-app-developer/articles/how-to-run-local-kubernetes-docker-for-mac.html
+  Enable Kubernetes in Docker for Mac
+  $ kubectl config get-contexts
+  $ kubectl config use-context docker-for-desktop
+  $ kubectl config current-context
+
+kubernetes-dashboard
+  https://rominirani.com/tutorial-getting-started-with-kubernetes-with-docker-on-mac-7f58467203fd
+  http://collabnix.com/kubernetes-dashboard-on-docker-desktop-for-windows-2-0-0-3-in-2-minutes/
+  $ kubectl config use-context docker-for-desktop
+  $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+  $ kubectl -n kube-system edit svc kubernetes-dashboard
+    spec:
+      type: ClusterIP -> NodePort
+  $ kubectl -n kube-system edit deployment kubernetes-dashboard
+    spec:
+      template:
+        spec:
+          containers:
+          - args
+            - --auto-generate-certificates
+            - --enable-skip-login
+  $ kubectl -n kube-system get svc kubernetes-dashboard
+  Chrome: https://127.0.0.1:PORT
 
 minikube
-  $ brew cask install minikube
-
-  https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperkit-driver
-  $ curl -LO https://storage.googleapis.com/minikube/releases/latest/docker-machine-driver-hyperkit \
-    && chmod +x docker-machine-driver-hyperkit \
-    && sudo mv docker-machine-driver-hyperkit /usr/local/bin/ \
-    && sudo chown root:wheel /usr/local/bin/docker-machine-driver-hyperkit \
-    && sudo chmod u+s /usr/local/bin/docker-machine-driver-hyperkit
-  $ minikube start --vm-driver hyperkit
-  $ minikube dashboard
-
   Enable Heapster metrics
     $ minikube addons enable heapster
     $ kubectl label svc heapster kubernetes.io/minikube-addons-endpoint=heapster --namespace kube-system

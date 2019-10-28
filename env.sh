@@ -9,3 +9,5 @@ export EDITOR=vim
 function mkcd() { mkdir -p "$@" && cd "$_"; }
 
 alias tsw="tmux split-window"
+alias mk="minikube"
+
