@@ -96,6 +96,9 @@ git ssh
   $ git clone git@github.com:AmundsenJunior/dotfiles.git
     Unlock key, and auto-unlock when logged in
 
+git-crypt
+  $ brew install git-crypt
+
 docker
   https://docs.docker.com/docker-for-mac/install/
 
@@ -159,6 +162,9 @@ pgcli
   $ vim ~/.config/pgcli/config
     [alias_dsn]
     prod_redshift = "host=redshiftclusterurl.us-east-1.redshift.amazonaws.com port=5439 dbname=proddb user=dbuser"
+
+pgadmin
+  $ brew cask install pgadmin4
 
 nodejs
   $ brew install node
