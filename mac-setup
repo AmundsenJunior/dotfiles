@@ -105,15 +105,19 @@ docker
 kubectl
   $ brew install kubernetes-cli
 
-helm
-  $ brew install kubernetes-helm
-
 minikube
   $ brew cask install minikube
 
   https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperkit-driver
-  $ minikube start --vm-driver hyperkit
-  $ minikube dashboard &
+  $ minikube start --cpus=4 --memory=8096 --disk-size=80g --kubernetes-version=1.15.4 --vm-driver hyperkit
+  $ minikube addons enable ingress
+  $ minikube addons enable heapster
+  $ minikube addons open heapster
+  $ minikube dashboard 
+
+helm
+  $ brew install kubernetes-helm
+  $ helm init (into minikube)
 
 aws-cli
   $ brew install awscli
@@ -121,6 +125,9 @@ aws-cli
 
 eksctl
   $ brew install weaveworks/tap/eksctl
+
+kompose
+  $ brew install kompose
 
 sublime
   $ brew cask install sublime-text

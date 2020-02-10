@@ -10,4 +10,6 @@ function mkcd() { mkdir -p "$@" && cd "$_"; }
 
 alias tsw="tmux split-window"
 alias mk="minikube"
+alias tf="terraform"
+alias tg="terragrunt"
 
