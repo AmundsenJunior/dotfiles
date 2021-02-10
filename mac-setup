@@ -119,6 +119,9 @@ helm
   $ brew install kubernetes-helm
   $ helm init (into minikube)
 
+lens
+  Download latest stable from https://github.com/lensapp/lens/releases
+
 aws-cli
   $ brew install awscli
   $ aws configure
@@ -145,6 +148,13 @@ terraform
 
 terragrunt
   $ brew install terragrunt
+
+tfenv
+  $ brew install tfenv
+
+tgenv
+  $ git clone https://github.com/cunymatthieu/tgenv.git ~/.tgenv
+  $ ln -s ~/.tgenv/bin/* /usr/local/bin
 
 Spotify
   $ brew cask install spotify
